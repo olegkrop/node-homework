@@ -1,73 +1,24 @@
 const express = require("express");
 const router = express.Router();
 
-const contacts = require("../../models/contacts");
-const { HttpError } = require("../../helpers");
-const { addSchema } = require("../../middleware/addSchema");
+const ctrl = require("../../controllers");
+const schemas = require("../../schemas/addSchema");
 
-router.get("/", async (req, res, next) => {
-  try {
-    const result = await contacts.listContacts();
-    res.json(result);
-  } catch (error) {
-    next(error);
-  }
-});
+const { validateBody } = require("../../middleware");
+const { ctrlWrapper } = require("../../helpers");
 
-router.get("/:contactId", async (req, res, next) => {
-  try {
-    const { contactId } = req.params;
-    const result = await contacts.getContactById(contactId);
-    if (!result) {
-      throw HttpError(404, "Contact not found");
-    }
-    res.json(result);
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/", ctrlWrapper(ctrl.getAll));
 
-router.post("/", async (req, res, next) => {
-  try {
-    const { error } = addSchema.validate(req.body);
-    if (error) {
-      throw HttpError(400, error.message);
-    }
-    const result = await contacts.addContact(req.body);
-    res.status(201).json(result);
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/:id", ctrlWrapper(ctrl.getById));
 
-router.put("/:contactId", async (req, res, next) => {
-  try {
-    const { error } = addSchema.validate(req.body);
-    if (error) {
-      throw HttpError(400, error.message);
-    }
-    const { contactId } = req.params;
-    const result = await contacts.updateContact(contactId, req.body);
-    if (!result) {
-      throw HttpError(404, "Contact not found");
-    }
-    res.status(200).json(result);
-  } catch (error) {
-    next(error);
-  }
-});
+router.post("/", validateBody(schemas.addSchema), ctrlWrapper(ctrl.add));
 
-router.delete("/:contactId", async (req, res, next) => {
-  try {
-    const { contactId } = req.params;
-    const result = await contacts.removeContact(contactId);
-    if (!result) {
-      throw HttpError(404, "Contact not found");
-    }
-    res.status(200).json({ message: "Contact deleted" });
-  } catch (error) {
-    next(error);
-  }
-});
+router.put(
+  "/:id",
+  validateBody(schemas.addSchema),
+  ctrlWrapper(ctrl.updateById)
+);
+
+router.delete("/:id", ctrlWrapper(ctrl.removeById));
 
 module.exports = router;
