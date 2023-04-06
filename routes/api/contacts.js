@@ -27,16 +27,8 @@ router.get("/", async (req, res, next) => {
     res.json(result);
   } catch (error) {
     next(error);
-    // const { status = 500, message = "Server Error" } = error;
-    // res.status(status).json({
-    //   message,
   }
 });
-//     res.status(500).json({
-//       message: "Server Error",
-//     });
-//   }
-// });
 
 router.get("/:contactId", async (req, res, next) => {
   try {
@@ -48,9 +40,6 @@ router.get("/:contactId", async (req, res, next) => {
     res.json(result);
   } catch (error) {
     next(error);
-    // const { status = 500, message = "Server Error" } = error;
-    // res.status(status).json({
-    //   message,
   }
 });
 
@@ -65,11 +54,6 @@ router.post("/", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-  // res.json({ message: "template message" });
-});
-
-router.delete("/:contactId", async (req, res, next) => {
-  res.json({ message: "template message" });
 });
 
 router.put("/:contactId", async (req, res, next) => {
@@ -84,6 +68,19 @@ router.put("/:contactId", async (req, res, next) => {
       throw HttpError(404, "Contact not found");
     }
     res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:contactId", async (req, res, next) => {
+  try {
+    const { contactId } = req.params;
+    const result = await contacts.removeContact(contactId);
+    if (!result) {
+      throw HttpError(404, "Contact not found");
+    }
+    res.status(200).json({ message: "Contact deleted" });
   } catch (error) {
     next(error);
   }
