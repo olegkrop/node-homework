@@ -1,6 +1,18 @@
+// jZmB8twQzjN39tiy
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+// const mongoose = require("mongoose");
+require("dotenv").config();
+// mongoose.set("strictQuery", false);
+
+// const { DB_HOST } = process.env;
+// const DB_HOST =
+//   "mongodb+srv://oleg:jZmB8twQzjN39tiy@cluster0.sjiqoyr.mongodb.net/db_contacts?retryWrites=true&w=majority";
+// mongoose
+//   .connect(DB_HOST)
+//   .then(() => console.log("Database connect"))
+//   .catch((error) => console.log(error.message));
 
 const app = express();
 
