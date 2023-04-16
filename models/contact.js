@@ -3,6 +3,8 @@ const Joi = require("joi");
 const { handleSaveErrors } = require("../helpers");
 
 const phoneRegexp = /^(\+?\d+)?\s*(\(\d+\))?[\s-]*([\d-]*)$/;
+const emailRegexp =
+  /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
 const contactSchema = new Schema(
   {
@@ -36,9 +38,7 @@ const addSchema = Joi.object({
       minDomainSegments: 2,
       tlds: { allow: ["com", "net", "org", "ua", "ca", "uk"] },
     })
-    .pattern(
-      /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-    )
+    .pattern(emailRegexp)
     .required(),
   phone: Joi.string().pattern(phoneRegexp).required(),
   favorite: Joi.boolean().optional(),
