@@ -15,6 +15,7 @@ const contactSchema = new Schema(
     email: {
       type: String,
       required: [true, "Set email for contact"],
+      match: emailRegexp,
     },
     phone: {
       type: String,
@@ -30,7 +31,6 @@ const contactSchema = new Schema(
 );
 
 contactSchema.post("save", handleSaveErrors);
-
 const addSchema = Joi.object({
   name: Joi.string().min(5).max(30).required(),
   email: Joi.string()
