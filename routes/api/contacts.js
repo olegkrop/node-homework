@@ -4,17 +4,18 @@ const router = express.Router();
 const ctrl = require("../../controllers");
 const { schemas } = require("../../models/contact");
 
-const { validateBody } = require("../../middleware");
+const { validateBody, isValidId } = require("../../middleware");
 const { ctrlWrapper } = require("../../helpers");
 
 router.get("/", ctrlWrapper(ctrl.getAll));
 
-router.get("/:id", ctrlWrapper(ctrl.getById));
+router.get("/:id", isValidId, ctrlWrapper(ctrl.getById));
 
 router.post("/", validateBody(schemas.addSchema), ctrlWrapper(ctrl.add));
 
 router.put(
   "/:id",
+  isValidId,
   validateBody(schemas.addSchema),
   ctrlWrapper(ctrl.updateById)
 );
