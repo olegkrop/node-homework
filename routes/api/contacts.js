@@ -20,10 +20,11 @@ router.put(
   ctrlWrapper(ctrl.updateById)
 );
 
-router.delete("/:id", ctrlWrapper(ctrl.removeById));
+router.delete("/:id", isValidId, ctrlWrapper(ctrl.removeById));
 
 router.patch(
   "/:id/favorite",
+  isValidId,
   validateBody(schemas.updateFavoriteSchema),
   ctrlWrapper(ctrl.updateFavorite)
 );
