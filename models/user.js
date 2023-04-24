@@ -21,15 +21,10 @@ const userSchema = new Schema(
       unique: true,
       match: emailRegexp,
     },
-    // subscription: {
-    //   type: String,
-    //   enum: subscriptionType,
-    //   default: "starter",
-    // },
-    // token: {
-    //   type: String,
-    //   default: "",
-    // },
+    token: {
+      type: String,
+      default: "",
+    },
   },
   { versionKey: false, timestamps: true }
 );
